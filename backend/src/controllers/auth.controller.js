@@ -18,7 +18,7 @@ export const signup = async(req, res) =>{
             return res.status(400).json({message: "Invalid email format"})
         }
 
-        const user = await User.findOne();
+        const user = await User.findOne({email});
         if(user) return res.status(400).json({message:"Email already exists"})
         
         const salt = await bcrypt.genSalt(10);
