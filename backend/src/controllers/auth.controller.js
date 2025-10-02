@@ -18,7 +18,7 @@ export const signup = async(req, res) =>{
             return res.status(400).json({message: "Invalid email format"})
         }
 
-        const user = await User.findOne();
+        const user = await User.findOne({email});
         if(user) return res.status(400).json({message:"Email already exists"})
         
         const salt = await bcrypt.genSalt(10);
@@ -31,15 +31,15 @@ export const signup = async(req, res) =>{
         })
 
         if(newUser){
-            generateToken(newUser._id, res);
-            await newUser.save();
+            const savedUser = await newUser.save();
+            generateToken(savedUser._id, res);
 
             res.status(201).json({
-                _id: newUser._id,
-                fullName: newUser.fullName,
-                email: newUser.email,
-                password: newUser.password,
-                profilePic: newUser.profilePic,
+                _id: savedUser._id,
+                fullName: savedUser.fullName,
+                email: savedUser.email,
+                password: savedUser.password,
+                profilePic: savedUser.profilePic,
 
             });
 
