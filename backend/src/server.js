@@ -1,4 +1,5 @@
 import express from "express";
+import cookieParser from "cookie-parser";
 import { ENV } from "./lib/env.js";
 import path from "path";
 
@@ -11,9 +12,9 @@ const _dirname = path.resolve();
 const PORT = ENV.PORT || 3000
 
 
-app.use(express.json())
+app.use(express.json());
+app.use(cookieParser());
 app.use("/api/auth", authRoutes);
-
 app.use("/api/message", messageRoutes);
 
 //make ready for deployment
